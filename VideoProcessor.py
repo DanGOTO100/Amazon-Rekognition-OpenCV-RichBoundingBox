@@ -1,33 +1,29 @@
-
 import requests
 import cv2
 from numpy import genfromtxt
 import numpy as np
 
-# Config  ----------Paths and artifacts used by script
+# -------------   Get paths and artifacts used by script  ----------
 
 # Read coordinates and info from Rekognition transformed to csv in a S3 bucket name “s3bucketnamepost”, 
 # Replace with your own paths to your bucket/buckets with the input video, the reference image and the generated csv file.
 
-# url variable stores the remote path in S3 where your csv lives. We need to download it and make it available locally 
+# First we take the faceoutput csv from S3 using Boto3.  
 # In order to load it into Numpy.
 
-url = ‘http://s3bucketnamepost/vaifaceoutput.csv'.  
-response = requests.get(url)
+s3c=boto3.client('s3')
+s3c.download_file(‘s3bucketnamepost’,'faceoutput.csv','faceoutput.csv')
 
-with open('faceoutput.csv', 'wb') as handle:
-    for block in response.iter_content(1024):
-        handle.write(block)
 # video input in S3,replace with your own path
 Videof = " http://s3bucketnamepost/vaivideo.mp4"
 
 # reference image in our face collection used for detection in S3, replace with your own path
 
-imgdown = cv2.VideoCapture("http://s3bucketnamepost//vai.jpg")
+imgdown = cv2.VideoCapture("http://s3bucketnamepost/vai.jpg")
 if( imgdown.isOpened() ) :
     ret,Imagef = imgdown.read()
 
-# ----------------------------
+# -------------------------------------------------------------
 
 
 # Other variables:
@@ -39,7 +35,7 @@ wkey = 1  # OpenCV wait key, needs to be modified according to the speed of the 
 
 Refimagescale = 0.4  # Reference image rescaling factor for visualization. 
 
-# ----------------------------
+# ---------------------------------------------------------------
 
 
 # Load csv into Numpy
@@ -130,3 +126,4 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+
