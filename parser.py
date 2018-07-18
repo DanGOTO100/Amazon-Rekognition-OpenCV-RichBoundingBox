@@ -56,4 +56,4 @@ else:
 #Automatically upload the csv file to my S3 bucket.
 data=open('facematch-output.csv','rb')
 s3 = boto3.resource('s3')
-s3.Bucket(‘BUCKETNAME’).put_object(Key='faceoutput.csv', Body=data)
+s3.Bucket(‘s3bucketnamepost’).put_object(Key='faceoutput.csv', Body=data)
