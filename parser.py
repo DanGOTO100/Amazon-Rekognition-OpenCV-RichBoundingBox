@@ -52,6 +52,8 @@ else:
             
     fx.close            
     summaryt = [ (summary.count(x), x) for x in set(summary)]
-    print("*****************************************************")
-    print("SUMMARY: External FaceID detected and its occurrences:")
-    print(summaryt)
+
+#Automatically upload the csv file to my S3 bucket.
+data=open('facematch-output.csv','rb')
+s3 = boto3.resource('s3')
+s3.Bucket(‘BUCKETNAME’).put_object(Key='faceoutput.csv', Body=data)
