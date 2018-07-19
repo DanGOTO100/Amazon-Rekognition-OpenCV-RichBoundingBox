@@ -1,29 +1,32 @@
+# VideoProcessor
+
+import boto3
 import requests
 import cv2
 from numpy import genfromtxt
 import numpy as np
 
-# -------------   Get paths and artifacts used by script  ----------
+#  ----------Paths and artifacts used by script -------------------------------------------------
+# The script uses a private bucket: s3bucketnamepost to store the csv file coming from the parser script.
+# The script uses a public bucket to store the input video and reference image: s3bucketpublicpost
+# Replace with your own paths (URL or local files) to your input video, reference image and the generated csv file.
 
-# Read coordinates and info from Rekognition transformed to csv in a S3 bucket name “s3bucketnamepost”, 
-# Replace with your own paths to your bucket/buckets with the input video, the reference image and the generated csv file.
 
-# First we take the faceoutput csv from S3 using Boto3.  
-# In order to load it into Numpy.
+# First we take the faceoutput csv from S3 using Boto3 and store it locally
+# Later, we willload it into NumPy.
+
 
 s3c=boto3.client('s3')
 s3c.download_file(‘s3bucketnamepost’,'faceoutput.csv','faceoutput.csv')
 
 # video input in S3,replace with your own path
-Videof = " http://s3bucketnamepost/vaivideo.mp4"
+Videof = " http://s3bucketpublicpost/vaivideo.mp4"
 
 # reference image in our face collection used for detection in S3, replace with your own path
 
-imgdown = cv2.VideoCapture("http://s3bucketnamepost/vai.jpg")
+imgdown = cv2.VideoCapture("http://s3bucketpublicpost/vai.jpg")
 if( imgdown.isOpened() ) :
     ret,Imagef = imgdown.read()
-
-# -------------------------------------------------------------
 
 
 # Other variables:
@@ -35,7 +38,7 @@ wkey = 1  # OpenCV wait key, needs to be modified according to the speed of the 
 
 Refimagescale = 0.4  # Reference image rescaling factor for visualization. 
 
-# ---------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
 
 
 # Load csv into Numpy
@@ -126,4 +129,3 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
-
