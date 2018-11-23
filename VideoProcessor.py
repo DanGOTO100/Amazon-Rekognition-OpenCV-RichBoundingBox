@@ -17,10 +17,10 @@ import numpy as np
 
 
 s3c=boto3.client('s3')
-s3c.download_file(‘s3bucketnamepost’,'faceoutput.csv','faceoutput.csv')
+s3c.download_file(‘s3bucketname','faceoutput.csv','faceoutput.csv')
 
 # video input in S3,replace with your own path
-Videof = " http://s3bucketpublicpost/vaivideo.mp4"
+Videof = " http://s3bucketpublicname/vaivideo.mp4"
 
 # reference image in our face collection used for detection in S3, replace with your own path
 
